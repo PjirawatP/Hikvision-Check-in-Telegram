@@ -1,0 +1,11 @@
+name: "check-in_tlg_notify"
+
+
+services:
+  listener:
+    build: .
+    container_name: listener
+    restart: unless-stopped
+    env_file:
+      - .env
+    network_mode: host
