@@ -9,7 +9,7 @@
 
 ---
 
-## ⚙️ Prerequisites
+## Prerequisites
 
 * Python **3.10+**
 * Docker (แนะนำ)
@@ -18,7 +18,7 @@
 
 ---
 
-## DEVICE_INFO
+## Device Info
 
 ```src/main.py
 DEVICES = [
