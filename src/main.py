@@ -14,14 +14,7 @@ DEVICES = [
         "port": "DEVICE_PORT",
         "username": "DEVICE_USERNAME",
         "password": "DEVICE_PASSWORD"
-    },
-    # {
-    #     "name": "DEVICE_NAME",
-    #     "ip": "DEVICE_IP",
-    #     "port": "DEVICE_PORT",
-    #     "username": "DEVICE_USERNAME",
-    #     "password": "DEVICE_PASSWORD"
-    # }
+    }
 ]
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -77,7 +70,7 @@ class EventListener:
         request_url = f"{self.base_url}/Event/notification/alertStream"
 
         try:
-            with requests.get(request_url, auth = self.auth, stream = True, timeout = 5) as response:
+            with requests.get(request_url, auth = self.auth, stream = True, timeout = None) as response:
                 boundary = response.headers.get("Content-Type").split("boundary=")[-1]
 
                 buffer = b""
