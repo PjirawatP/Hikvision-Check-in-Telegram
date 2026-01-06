@@ -5,106 +5,215 @@
 ---
 
 ## Model ที่ทดสอบแล้ว
+
 * DS-K1T672MW
+* DS-K1T323MBFWX-E1
 
 ---
 
-## Prerequisites
+## ขั้นตอนการติดตั้ง Project
 
-* Python **3.10+**
+### Prerequisties
+
 * Docker (แนะนำ)
-* Telegram Bot Token
-* Telegram Chat ID
+* Python **3.12**
+* Telegram Bot Token และ Chat ID
 
 ---
 
-## Device Info
+### Project Setup
 
-```src/main.py
-DEVICES = [
-    {
-        "name": "DEVICE_NAME",
-        "ip": "DEVICE_IP",
-        "port": "DEVICE_PORT",
-        "username": "DEVICE_USERNAME",
-        "password": "DEVICE_PASSWORD"
-    },
-    {
-        "name": "DEVICE_NAME",
-        "ip": "DEVICE_IP",
-        "port": "DEVICE_PORT",
-        "username": "DEVICE_USERNAME",
-        "password": "DEVICE_PASSWORD"
-    }
-]
-```
+* ดาวน์โหลด Source Code ด้วย [Git](https://git-scm.com/)
 
----
-## Environment Variables
+    ```
+    git clone https://github.com/PjirawatP/Hikvision-Check-in-Telegram.git
+    ```
 
-```env
-# ========== TELEGRAM ==========
-TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
-TELEGRAM_CHAT_ID=YOUR_CHAT_ID
-```
+* เพิ่มข้อมูลของอุปกรณ์ใน src/main.py
 
----
+    ```
+    DEVICES = [
+        {
+            "name": "DEVICE_NAME",
+            "ip": "DEVICE_IP",
+            "port": "DEVICE_PORT",
+            "username": "DEVICE_USERNAME",
+            "password": "DEVICE_PASSWORD"
+        }
+    ]
+    ```
 
-## Run ด้วย Python (Local)
+* หากต้องการเพิ่มอุปกรณ์สามารถทำได้ดังตัวอย่างด้านล่าง
 
-### สร้าง Virtual Environment
+    ```
+    DEVICES = [
+        {
+            "name": "DEVICE_NAME",
+            "ip": "DEVICE_IP",
+            "port": "DEVICE_PORT",
+            "username": "DEVICE_USERNAME",
+            "password": "DEVICE_PASSWORD"
+        },
+        {
+            "name": "DEVICE_NAME",
+            "ip": "DEVICE_IP",
+            "port": "DEVICE_PORT",
+            "username": "DEVICE_USERNAME",
+            "password": "DEVICE_PASSWORD"
+        }
+    ]
+    ```
 
-```bash
-python -m venv .venv
-```
+* เพิ่ม Telegram Bot Token และ Chat ID ลงใน .env
 
-**Windows**
-
-```bash
-.venv\Scripts\activate
-```
-
-**Linux / Mac**
-
-```bash
-source .venv/bin/activate
-```
+    ```.env
+    TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
+    TELEGRAM_CHAT_ID=YOUR_CHAT_ID
+    ```
 
 ---
 
-### 2 ติดตั้ง Dependencies
+### Telegram Bot Token & Chat ID 
 
-```bash
-pip install -r requirements.txt
-```
+* สามารถไปเอา Telegram Bot Token & Chat ID ได้ที่ [Telegram](https://web.telegram.org/a/)
+
+    * เมื่อเข้าไปยังหน้าเว็บของ Telegram ให้ทำการเข้าสู่ระบบให้เรียบร้อย
+
+    * จากนั้นพิมพ์ **BotFather** ในช่องค้นหา
+
+    * คลิกเข้าไปที่ **BotFather** เพื่อทำการสนทนา
+
+    * พิมพ์ข้อความในช่องสนทนาว่า **/newbot** และกดส่ง
+
+    * เมื่อกดส่งไปแล้วจะได้ข้อความว่า
+
+        ```
+        Alright, a new bot. How are we going to call it? Please choose a name for your bot.
+        ```
+
+    * หลังจากนั้นให้พิมพ์ชื่อบอทของตนเอง โดยต้องมีคำว่า **bot** ต่อท้าย เช่น
+
+        ```
+        NotifyBot
+        ```
+
+    * หากสร้างบอทสำเร็จจะได้ข้อความ ดังนี้
+
+        ```
+        Done! Congratulations on your new bot. You will find it at t.me/<YOUT_BOT_NAME>. You can now add a description, about section and profile picture for your bot, see /help for a list of commands. By the way, when you've finished creating your cool bot, ping our Bot Support if you want a better username for it. Just make sure the bot is fully operational before you do this.
+
+        Use this token to access the HTTP API:
+        <YOUR_BOT_TOKEN>
+        Keep your token secure and store it safely, it can be used by anyone to control your bot.
+
+        For a description of the Bot API, see this page: https://core.telegram.org/bots/api
+        ```
+
+    * เมื่อสร้างบอทแล้วให้ทำการเข้าไปยังบอทของตนเอง และพิมพ์ข้อความบางอย่างส่งไปยังบอทของตนเอง
+    
+    * หลังจากนั้นให้ไปยัง
+
+        ```
+        https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates
+        ```
+
+    * จะได้ข้อความแบบ JSON ดังตัวอย่างด้านล่าง
+
+        ```
+        {
+            "ok": true,
+            "result": [
+                {
+                    "update_id": 202193988,
+                    "message": {
+                        "message_id": 246,
+                        "from": {
+                            "id": <YOUR_CHAT_ID>,
+                            "is_bot": false,
+                            "first_name": "Unknow",
+                            "language_code": "en"
+                        },
+                        "chat": {
+                            "id": <YOUR_CHAT_ID>,
+                            "first_name": "Firstname",
+                            "type": "private"
+                        },
+                        "date": 1767681204,
+                        "text": "Hello World"
+                    }
+                }
+            ]
+        }
+        ```
 
 ---
 
-### 3 Run Application
+### Device Setup
 
-```bash
-python src/main.py
-```
+* DS-K1T672MW Firmware Version V3.7.0 build 231207
 
-ถ้าสำเร็จ:
+    * ไปที่ Configuration/Security/Privacy Settings
+        
+        * เปิดใช้งานในส่วนของ Authentication Result Settings และ Picture Uploading and Storage ให้หมด
 
-```text
-[DeviceName1] Connected
-[DeviceName2] Connected
-```
+        * จากนั้นกด Save
+
+* DS-K1T323MBFWX-E1 Firmware Version V4.23.40 build 250816
+
+    * ไปที่ Paramiter Settings/Privacy Settings
+
+        * เปิดใช้งานในส่วนของ Authentication Result Settings และ Picture Uploading and Storage ให้หมด
+
+        * จากนั้นกด Save
 
 ---
 
-## Run ด้วย Docker (Recommended)
+## ขั้นตอนการ Run Project
 
-### Build & Run
+### Run ด้วย Python (Local)
 
-```bash
-docker compose up -d --build
-```
+* สร้าง Virtual Environment
 
-ดู log:
+    ```bash
+    python -m venv .venv
+    ```
 
-```bash
-docker compose logs -f
-```
+    **Windows**
+
+    ```bash
+    .venv\Scripts\activate
+    ```
+
+    **Linux / Mac**
+
+    ```bash
+    source .venv/bin/activate
+    ```
+
+* ติดตั้ง Dependencies
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+* Run Application
+
+    ```bash
+    python src/main.py
+    ```
+
+---
+
+### Run ด้วย Docker (แนะนำ)
+
+* Build & Run
+
+    ```bash
+    docker compose up -d --build
+    ```
+
+* ดู log
+
+    ```bash
+    docker compose logs -f
+    ```
